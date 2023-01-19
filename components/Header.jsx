@@ -8,8 +8,10 @@ import {
   PlusCircleIcon,
   Bars3Icon,
   HeartIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/20/solid';
+import Popover from '../components/Popover';
 
 const Header = () => {
   return (
@@ -50,6 +52,38 @@ const Header = () => {
         </div>
 
         {/* right */}
+        <div className="flex items-center space-x-5">
+          <HomeIcon className="navBtn" />
+          <div className="relative navBtn">
+            <PaperAirplaneIcon className="navBtn -rotate-45" />
+            <div className="absolute bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center text-white -top-2 -right-2 animate-pulse">
+              3
+            </div>
+          </div>
+          <PlusCircleIcon className="navBtn" />
+          <HeartIcon className="navBtn" />
+          <Popover
+            BtnIcon={Bars3Icon}
+            BtnPanel={[
+              { title: 'Your Messages', icon: PaperAirplaneIcon, class: 'msg' },
+              { title: 'Create new post', icon: PlusCircleIcon },
+              { title: 'Notifications', icon: HeartIcon },
+            ]}
+          />
+          <Popover
+            iconImgCheck="img"
+            BtnIcon={iconLogo}
+            BtnPanel={[
+              {
+                title: 'Youssef Yasser',
+                image: iconLogo,
+                alt: 'profile picture',
+                class: 'img',
+              },
+              { title: 'Log out', icon: ArrowRightOnRectangleIcon },
+            ]}
+          />
+        </div>
       </div>
     </nav>
   );
