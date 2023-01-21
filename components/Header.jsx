@@ -62,17 +62,9 @@ const Header = () => {
           </div>
           <PlusCircleIcon className="navBtn" />
           <HeartIcon className="navBtn" />
+
           <Popover
-            BtnIcon={Bars3Icon}
-            BtnPanel={[
-              { title: 'Your Messages', icon: PaperAirplaneIcon, class: 'msg' },
-              { title: 'Create new post', icon: PlusCircleIcon },
-              { title: 'Notifications', icon: HeartIcon },
-            ]}
-          />
-          <Popover
-            iconImgCheck="img"
-            BtnIcon={iconLogo}
+            menuBtn={iconLogo}
             BtnPanel={[
               {
                 title: 'Youssef Yasser',
@@ -80,7 +72,14 @@ const Header = () => {
                 alt: 'profile picture',
                 class: 'img',
               },
-              { title: 'Log out', icon: ArrowRightOnRectangleIcon },
+              { title: 'Your Messages', icon: PaperAirplaneIcon, class: 'msg' },
+              { title: 'Create new post', icon: PlusCircleIcon },
+              { title: 'Notifications', icon: HeartIcon },
+              {
+                title: 'Log out',
+                icon: ArrowRightOnRectangleIcon,
+                class: 'logout',
+              },
             ]}
           />
         </div>

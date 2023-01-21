@@ -1,32 +1,18 @@
 import { Menu, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import { Fragment } from 'react';
+import { signIn, signOut } from 'next-auth/react';
 
-const PopverComponent = ({ iconImgCheck, BtnIcon, BtnPanel }) => {
+const PopverComponent = ({ menuBtn, BtnPanel }) => {
   return (
-    <Menu
-      as="div"
-      className={`${
-        iconImgCheck === 'img' || 'md:hidden'
-      } inline-block relative text-left`}
-    >
+    <Menu as="div" className="inline-block relative text-left">
       <div>
-        <Menu.Button
-          className={` cursor-pointer ${
-            iconImgCheck === 'img'
-              ? 'active:scale-95 filter active:brightness-75'
-              : 'ui-open:rotate-90'
-          } transition-all duration-150`}
-        >
-          {iconImgCheck === 'img' ? (
-            <Image
-              src={BtnIcon}
-              alt="profile pic"
-              className="rounded-full h-10 w-10 object-contain"
-            />
-          ) : (
-            <BtnIcon className="h-6" />
-          )}
+        <Menu.Button className="cursor-pointer active:scale-95 filter active:brightness-75 ui-open:ring-4 ui-open:ring-gray-600 ui-open:rounded-full transition-all duration-150">
+          <Image
+            src={menuBtn}
+            alt="profile pic"
+            className="rounded-full h-10 w-10 object-contain"
+          />
         </Menu.Button>
       </div>
 
@@ -45,11 +31,16 @@ const PopverComponent = ({ iconImgCheck, BtnIcon, BtnPanel }) => {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <div
-                    className={`${active && 'bg-gray-100 text-gray-900'} ${
+                    // onClick={() => btn.class === 'logout' && signOut()}
+                    className={`${
+                      btn.class === 'img' ||
+                      btn.class === 'logout' ||
+                      'md:hidden'
+                    } ${active && 'bg-gray-100 text-gray-900'} ${
                       index === 0 && 'rounded-t-lg'
                     } ${
                       index === BtnPanel.length - 1 && 'rounded-b-lg'
-                    } group flex items-center p-3 sm:p-4 space-x-3  cursor-pointer`}
+                    } group flex items-center p-3 space-x-3  cursor-pointer`}
                   >
                     {btn.class === 'img' ? (
                       <Image
@@ -59,29 +50,24 @@ const PopverComponent = ({ iconImgCheck, BtnIcon, BtnPanel }) => {
                       />
                     ) : (
                       <div
-                        className={`${
-                          iconImgCheck === 'img'
-                            ? active
-                              ? 'bg-gray-300 p-2 rounded-full'
-                              : 'bg-gray-200 p-2 rounded-full'
-                            : ''
-                        } ${btn.class === 'msg' && 'relative'}`}
+                        className={` ${
+                          active ? 'bg-gray-300' : 'bg-gray-200'
+                        } ${
+                          btn.class === 'msg' && 'relative'
+                        } p-2 rounded-full`}
                       >
-                        {btn.class === 'msg' ? (
-                          <div>
-                            <btn.icon
-                              className={`h-6 sm:h-6 -rotate-45
-                              } group-hover:scale-105 transition-transform duration-150`}
-                            />
-                            <div className="absolute bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center text-white -top-2 -right-2 animate-pulse">
+                        <div>
+                          <btn.icon
+                            className={`${
+                              btn.class === 'msg' && '-rotate-45'
+                            } h-6 sm:h-6 group-hover:scale-105 transition-transform duration-150`}
+                          />
+                          {btn.class === 'msg' && (
+                            <div className="absolute bg-red-500 rounded-full text-xs w-5 h-5 flex items-center justify-center text-white -top-1 -right-1 animate-pulse">
                               3
                             </div>
-                          </div>
-                        ) : (
-                          <btn.icon
-                            className={`h-6 group-hover:scale-105 transition-transform duration-150`}
-                          />
-                        )}
+                          )}
+                        </div>
                       </div>
                     )}
                     <p className="text-sm sm:text-base font-medium">
