@@ -1,13 +1,12 @@
 import { Menu, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import { Fragment } from 'react';
-import { signIn, signOut } from 'next-auth/react';
 
 const PopverComponent = ({ menuBtn, BtnPanel }) => {
   return (
     <Menu as="div" className="inline-block relative text-left">
       <div>
-        <Menu.Button className="cursor-pointer active:scale-95 filter active:brightness-75 ui-open:ring-4 ui-open:ring-gray-600 ui-open:rounded-full transition-all duration-150">
+        <Menu.Button className="cursor-pointer active:scale-95 filter active:brightness-75 ui-open:ring-2 ui-open:ring-black p-[1.5px] ui-open:rounded-full transition-all duration-150">
           <Image
             src={menuBtn}
             alt="profile pic"
