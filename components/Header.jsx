@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import textLogo from '../public/insta-logo-text.png';
-import iconLogo from '../public/profileTest.jpg';
+import iconLogo from '../public/insta-logo-icon.png';
+import profileImg from '../public/profileTest.jpg';
 import {
   MagnifyingGlassIcon,
   PaperAirplaneIcon,
@@ -64,11 +65,11 @@ const Header = () => {
           <HeartIcon className="navBtn" />
 
           <Popover
-            menuBtn={iconLogo}
+            menuBtn={profileImg}
             BtnPanel={[
               {
                 title: 'Youssef Yasser',
-                image: iconLogo,
+                image: profileImg,
                 alt: 'profile picture',
                 class: 'img',
               },
