@@ -1,4 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { Fragment } from 'react';
 
@@ -6,11 +7,12 @@ const PopverComponent = ({ menuBtn, BtnPanel }) => {
   return (
     <Menu as="div" className="inline-block relative text-left">
       <div>
-        <Menu.Button className="cursor-pointer active:scale-95 filter active:brightness-75 ui-open:ring-2 ui-open:ring-black p-[1.5px] ui-open:rounded-full transition-all duration-150">
+        <Menu.Button className="relative w-10 h-10 sm:w-12 sm:h-12 cursor-pointer active:scale-95 filter active:brightness-75 ui-open:ring-2 ui-open:ring-black ui-open:rounded-full transition-all duration-150">
           <Image
             src={menuBtn}
+            layout="fill"
             alt="profile pic"
-            className="rounded-full h-10 w-10 object-contain"
+            className="rounded-full p-[1.5px] object-contain"
           />
         </Menu.Button>
       </div>
@@ -30,7 +32,9 @@ const PopverComponent = ({ menuBtn, BtnPanel }) => {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <div
-                    // onClick={() => btn.class === 'logout' && signOut()}
+                    onClick={() =>
+                      btn.class === 'logout' && signOut({ callbackUrl: '/' })
+                    }
                     className={`${
                       btn.class === 'img' ||
                       btn.class === 'logout' ||
@@ -42,11 +46,14 @@ const PopverComponent = ({ menuBtn, BtnPanel }) => {
                     } group flex items-center p-3 space-x-3  cursor-pointer`}
                   >
                     {btn.class === 'img' ? (
-                      <Image
-                        src={btn.image}
-                        alt={btn.alt}
-                        className="w-10 h-10 rounded-full object-contain"
-                      />
+                      <div className="relative w-10 h-10 sm:w-11 sm:h-11">
+                        <Image
+                          layout="fill"
+                          src={btn.image}
+                          alt={btn.alt}
+                          className="rounded-full object-contain"
+                        />
+                      </div>
                     ) : (
                       <div
                         className={` ${
