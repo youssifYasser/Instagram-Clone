@@ -2,8 +2,11 @@ import { Menu, Transition } from '@headlessui/react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { Fragment } from 'react';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
 
 const PopverComponent = ({ menuBtn, BtnPanel }) => {
+  const [open, setOpen] = useRecoilState(modalState);
   return (
     <Menu as="div" className="inline-block relative text-left">
       <div>
@@ -32,9 +35,10 @@ const PopverComponent = ({ menuBtn, BtnPanel }) => {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <div
-                    onClick={() =>
-                      btn.class === 'logout' && signOut({ callbackUrl: '/' })
-                    }
+                    onClick={() => {
+                      btn.class === 'logout' && signOut({ callbackUrl: '/' });
+                      btn.class === 'add' && setOpen(true);
+                    }}
                     className={`${
                       btn.class === 'img' ||
                       btn.class === 'logout' ||

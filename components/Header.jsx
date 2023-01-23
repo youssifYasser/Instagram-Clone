@@ -94,7 +94,11 @@ const Header = () => {
                     icon: PaperAirplaneIcon,
                     class: 'msg',
                   },
-                  { title: 'Create new post', icon: PlusCircleIcon },
+                  {
+                    title: 'Create new post',
+                    icon: PlusCircleIcon,
+                    class: 'add',
+                  },
                   { title: 'Notifications', icon: HeartIcon },
                   {
                     title: 'Log out',
