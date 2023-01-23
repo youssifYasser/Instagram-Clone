@@ -26,7 +26,7 @@ const PopverComponent = ({ menuBtn, BtnPanel }) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-15 mt-3 w-56 origin-top-right rounded-lg bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-50 mt-3 w-56 origin-top-right rounded-lg bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="border-b border-gray-200">
             {BtnPanel.map((btn, index) => (
               <Menu.Item key={index}>

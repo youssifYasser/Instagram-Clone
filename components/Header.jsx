@@ -23,7 +23,7 @@ const Header = () => {
   const [open, setOpen] = useRecoilState(modalState);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b shadow-md">
+    <nav className="sticky top-0 z-10 bg-white border-b shadow-md">
       <div className="flex justify-between items-center max-w-6xl p-3 md:py-4 mx-auto">
         {/* left */}
         <Link href="/">
@@ -75,7 +75,10 @@ const Header = () => {
                   3
                 </div>
               </div>
-              <PlusCircleIcon className="navBtn" onClick={setOpen(true)} />
+              <PlusCircleIcon
+                className="navBtn"
+                onClick={() => setOpen(true)}
+              />
               <HeartIcon className="navBtn" />
               <Popover
                 menuBtn={session.user.image}
