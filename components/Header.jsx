@@ -2,12 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import textLogo from '../public/insta-logo-text.png';
 import iconLogo from '../public/insta-logo-icon.png';
-import profileImg from '../public/profileTest.jpg';
 import {
   MagnifyingGlassIcon,
   PaperAirplaneIcon,
   PlusCircleIcon,
-  Bars3Icon,
   HeartIcon,
   ArrowRightOnRectangleIcon,
   UserIcon,
