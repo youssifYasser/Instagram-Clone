@@ -7,8 +7,8 @@ const signInPage = ({ providers }) => {
     <>
       <Head>
         <title>Login - Instagram</title>
-        <link rel="icon" href="/favicon.png" />
       </Head>
+
       <div className="grid place-items-center mt-36 text-center">
         <img
           src="/insta-logo-text.png"

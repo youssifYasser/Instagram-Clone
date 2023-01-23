@@ -8,7 +8,6 @@ const SignIn = ({ provider }) => {
     <>
       {provider && (
         <div
-          key={provider.name}
           onClick={() => {
             signIn(provider.id, { callbackUrl: '/' });
           }}
