@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { CameraIcon } from '@heroicons/react/24/outline';
 import { Fragment, useRef, useState } from 'react';
-import { Snapshot, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
 import {
   addDoc,
@@ -105,14 +105,16 @@ const CreatePostModal = () => {
                             <img
                               src={selectedImage}
                               alt="post image"
-                              classname="w-full object-contain"
+                              className="w-full object-contain"
                             />
-                            <p
-                              onClick={() => setSelectedImage(null)}
-                              className="text-red-600 font-medium cursor-pointer "
-                            >
-                              Remove
-                            </p>
+                            {loading || (
+                              <p
+                                onClick={() => setSelectedImage(null)}
+                                className="text-red-600 font-medium cursor-pointer "
+                              >
+                                Remove
+                              </p>
+                            )}
                           </div>
                         ) : (
                           <>
@@ -149,7 +151,7 @@ const CreatePostModal = () => {
                         <div className="mt-4">
                           <button
                             onClick={uploadPost}
-                            disabled={!selectedImage}
+                            disabled={!selectedImage || loading}
                             type="button"
                             className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base sm:text-sm font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 "
                           >
