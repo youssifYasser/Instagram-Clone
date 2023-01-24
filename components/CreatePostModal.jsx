@@ -128,6 +128,7 @@ const CreatePostModal = () => {
                             <div>
                               <input
                                 type="file"
+                                accept="image/*"
                                 ref={filePickerRef}
                                 onChange={addImageToPost}
                                 hidden
