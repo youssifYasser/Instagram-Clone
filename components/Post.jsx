@@ -115,7 +115,10 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
             ) : (
               <HeartIcon onClick={likePost} className="postBtn" />
             )}
-            <ChatBubbleOvalLeftEllipsisIcon className="postBtn" />
+            <ChatBubbleOvalLeftEllipsisIcon
+              onClick={() => commentRef.current.focus()}
+              className="postBtn"
+            />
             <PaperAirplaneIcon className="postBtn -rotate-45" />
           </div>
 
