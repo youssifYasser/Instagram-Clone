@@ -13,10 +13,13 @@ import { useEffect, useRef, useState } from 'react';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  setDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import Moment from 'react-moment';
@@ -24,18 +27,46 @@ import Moment from 'react-moment';
 const Post = ({ id, username, userImg, postImg, caption }) => {
   const [showCaption, setShowCaption] = useState(false);
   const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
   const { data: session } = useSession();
   const commentRef = useRef(null);
 
   useEffect(() => {
-    onSnapshot(
+    const unsubscribe = onSnapshot(
       query(
         collection(db, 'posts', id, 'comments'),
         orderBy('timestamp', 'desc')
       ),
       (Snapshot) => setComments(Snapshot.docs)
     );
-  }, [db]);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [db, id]);
+
+  useEffect(() => {
+    onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) =>
+      setLikes(snapshot.docs)
+    );
+  }, [db, id]);
+
+  useEffect(() => {
+    setHasLiked(
+      likes.findIndex((like) => like.id === session?.user?.uid) !== -1
+    );
+  }, [likes]);
+
+  const likePost = async () => {
+    if (hasLiked) {
+      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+    } else {
+      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
+        username: session.user.username,
+      });
+    }
+  };
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -50,6 +81,7 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
       comment: commentToPost,
     });
   };
+
   return (
     <div className="bg-white my-7 border rounded-sm">
       {/* post header */}
@@ -75,7 +107,14 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
       {session && (
         <div className="flex  justify-between px-4 pt-3 sm:pt-4">
           <div className="flex space-x-4">
-            <HeartIcon className="postBtn" />
+            {hasLiked ? (
+              <HeartIconFilled
+                onClick={likePost}
+                className="postBtn text-red-500"
+              />
+            ) : (
+              <HeartIcon onClick={likePost} className="postBtn" />
+            )}
             <ChatBubbleOvalLeftEllipsisIcon className="postBtn" />
             <PaperAirplaneIcon className="postBtn -rotate-45" />
           </div>
@@ -85,7 +124,12 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
       )}
 
       {/* caption */}
-      <div className="p-4 sm:p-5 flex items-center">
+      <div className="p-4 sm:p-5 flex flex-col ">
+        {likes.length > 0 && (
+          <p className="font-bold mb-1">
+            {likes.length} {likes.length > 1 ? 'likes' : 'like'}
+          </p>
+        )}
         <p className="text-sm sm:text-base">
           <span className="font-bold mr-1">{username}</span>
           {showCaption ? caption : caption.slice(0, 35)}
