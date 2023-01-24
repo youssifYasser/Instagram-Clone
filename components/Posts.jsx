@@ -1,22 +1,26 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { postsState } from '../atoms/postsAtom';
 import { db } from '../firebase';
 import Post from './Post';
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
+  const postsAtom = useRecoilValue(postsState);
+  const [posts, setPosts] = useState(postsAtom);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
+    onSnapshot(
       query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
-      (Snapshot) => {
-        setPosts(Snapshot.docs);
+      (snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
       }
     );
-
-    return () => {
-      unsubscribe();
-    };
   }, [db]);
   return (
     <div>
@@ -24,10 +28,10 @@ const Posts = () => {
         <Post
           key={post.id}
           id={post.id}
-          username={post.data().username}
-          userImg={post.data().profileImage}
-          postImg={post.data().postImage}
-          caption={post.data().caption}
+          username={post.username}
+          userImg={post.profileImage}
+          postImg={post.postImage}
+          caption={post.caption}
         />
       ))}
     </div>

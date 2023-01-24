@@ -2,12 +2,16 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { postsState } from '../atoms/postsAtom';
 import CreatePostModal from '../components/CreatePostModal';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
 import { db } from '../firebase';
 
 const Home = ({ posts }) => {
+  const [postsAtom, setPostsAtom] = useRecoilState(postsState);
+  setPostsAtom(posts);
   return (
     <>
       <Head>
@@ -19,11 +23,28 @@ const Home = ({ posts }) => {
 
       <main className="overflow-y-scroll bg-gray-50  h-screen scrollbar-thumb-black scrollbar-thin">
         <Header />
-        <Feed posts={posts} />
+        <Feed />
         <CreatePostModal />
       </main>
     </>
   );
+};
+
+export const getServerSideProps = async (context) => {
+  const postsRef = collection(db, 'posts');
+  const postsQuery = query(postsRef, orderBy('timestamp', 'desc'));
+  const postsSnapshot = await getDocs(postsQuery);
+  const posts = postsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+    timestamp: null,
+  }));
+
+  return {
+    props: {
+      posts,
+    },
+  };
 };
 
 export default Home;
