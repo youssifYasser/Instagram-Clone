@@ -13,7 +13,7 @@ const Feed = () => {
       } `}
     >
       <section className="col-span-2">
-        <Stories />
+        {session && <Stories />}
         <Posts />
       </section>
 

@@ -1,7 +1,6 @@
 import '../styles/globals.css';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
-import Header from '../components/Header';
 import { RecoilRoot } from 'recoil';
 
 export default function App({
@@ -18,7 +17,6 @@ export default function App({
           <link rel="icon" href="/headerIcon.png" />
         </Head>
 
-        <Header />
         <Component {...pageProps} />
       </RecoilRoot>
     </SessionProvider>

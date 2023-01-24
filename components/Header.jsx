@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/20/solid';
 import Popover from '../components/Popover';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
 
@@ -109,7 +109,10 @@ const Header = () => {
           ) : (
             <>
               <Link href="/auth/sign-in">
-                <button className="px-3 sm:px-5 py-1 text-sm sm:text-base whitespace-nowrap font-semibold text-center rounded-full border-2 border-black text-white bg-black hover:bg-opacity-90 active:bg-white active:text-black transition-colors duration-150 ">
+                <button
+                  className="px-3 sm:px-5 py-1 text-sm sm:text-base whitespace-nowrap font-semibold text-center rounded-full border-2 border-black text-white bg-black hover:bg-opacity-90 active:bg-white active:text-black transition-colors duration-150 "
+                  onClick={signIn}
+                >
                   Sign In
                 </button>
               </Link>

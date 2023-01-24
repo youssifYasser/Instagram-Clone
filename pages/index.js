@@ -1,8 +1,13 @@
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import CreatePostModal from '../components/CreatePostModal';
 import Feed from '../components/Feed';
+import Header from '../components/Header';
+import { db } from '../firebase';
 
-export default function Home() {
+const Home = ({ posts }) => {
   return (
     <>
       <Head>
@@ -11,10 +16,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/headerIcon.png" />
       </Head>
-      <main className="bg-gray-50 h-screen">
+
+      <main className="overflow-y-scroll bg-gray-50  h-screen scrollbar-thumb-black scrollbar-thin">
+        <Header />
+        <Feed posts={posts} />
         <CreatePostModal />
-        <Feed />
       </main>
     </>
   );
-}
+};
+
+export default Home;

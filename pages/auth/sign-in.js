@@ -1,14 +1,15 @@
 import { getProviders } from 'next-auth/react';
 import Head from 'next/head';
+import Header from '../../components/Header';
 import SignIn from '../../components/SignIn';
 
-const signInPage = ({ providers }) => {
+const SignInPage = ({ providers }) => {
   return (
     <>
       <Head>
         <title>Login - Instagram</title>
       </Head>
-
+      <Header />
       <div className="grid place-items-center mt-36 text-center">
         <img
           src="/insta-logo-text.png"
@@ -35,4 +36,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default signInPage;
+export default SignInPage;
