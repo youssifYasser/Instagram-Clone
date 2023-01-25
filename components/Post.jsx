@@ -142,17 +142,21 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
           onDoubleClick={likePost}
           className="w-full relative cursor-pointer select-none"
         >
-          <img src={postImg} className="object-cover w-full" alt="post-image" />
+          <img
+            src={postImg}
+            className="object-cover w-full select-none"
+            alt="post-image"
+          />
 
           <div
             className={`${
-              hasLiked && 'delay-1000 scale-0'
-            } transition-all duration-300 ease-out absolute inset-0 flex items-center justify-center`}
+              hasLiked && 'delay-1000 opacity-0'
+            } transition-all duration-300 ease-out absolute inset-0 flex items-center justify-center select-none`}
           >
             <HeartIconFilled
               className={` ${
-                hasLiked ? 'scale-100' : 'hidden'
-              } transition-all duration-300 ease-out text-gray-400 text-opacity-90 w-16 sm:w-20`}
+                hasLiked ? 'scale-100' : 'delay-300 opacity-100 scale-0'
+              } transition-all duration-300 ease-out text-gray-400 text-opacity-80 w-16 sm:w-20 select-none`}
             />
           </div>
         </div>
