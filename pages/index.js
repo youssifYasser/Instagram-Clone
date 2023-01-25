@@ -24,7 +24,7 @@ const Home = ({ posts }) => {
         <link rel="icon" href="/headerIcon.png" />
       </Head>
 
-      <main className="overflow-y-scroll bg-gray-50  h-screen scrollbar-thumb-black scrollbar-thin">
+      <main className="overflow-y-scroll bg-gray-50  h-screen scrollbar-thumb-gray-400 scrollbar-thin">
         <Header />
         <Feed />
         <CreatePostModal />
