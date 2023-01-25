@@ -1,6 +1,10 @@
+import MenuComponent from './Menu';
 import {
   EllipsisHorizontalIcon,
+  StarIcon,
+  TrashIcon,
   HeartIcon,
+  UserMinusIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   PaperAirplaneIcon,
   BookmarkIcon,
@@ -9,7 +13,7 @@ import {
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/24/solid';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   addDoc,
   collection,
@@ -27,6 +31,7 @@ import { useRecoilState } from 'recoil';
 import { likesState } from '../atoms/likesAtom';
 import { likesModalState } from '../atoms/likesModalAtom';
 import { Menu, Transition } from '@headlessui/react';
+
 import { deleteObject, ref } from 'firebase/storage';
 import { modalState } from '../atoms/modalAtom';
 import { deletePostState } from '../atoms/deletePostAtom';
@@ -41,7 +46,6 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
   const [likesAtom, setLikesAtom] = useRecoilState(likesState);
   const [likesOpen, setLikesOpen] = useRecoilState(likesModalState);
   const [open, setOpen] = useRecoilState(modalState);
-  const [deletePostAtom, setDeletePostAtom] = useRecoilState(deletePostState);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -111,7 +115,28 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
 
         {session && (
           <div className="flex items-center">
-            <Menu as="div" className="relative inline-block text-left">
+            <MenuComponent
+              MenuBtnIcon={EllipsisHorizontalIcon}
+              postDetails={{
+                userId: userId,
+                postId: id,
+                postImage: postImg,
+                caption: caption,
+              }}
+              BtnPanel={[
+                {
+                  title: 'Add to favourites',
+                  icon: StarIcon,
+                },
+                {
+                  title: 'Delete post',
+                  icon: TrashIcon,
+                  class: 'delete',
+                },
+                { title: 'Unfollow', icon: UserMinusIcon, class: 'unfollow' },
+              ]}
+            />
+            {/* <Menu as="div" className="relative inline-block text-left">
               <div className="flex items-center cursor-pointer">
                 <Menu.Button>
                   <EllipsisHorizontalIcon className="h-5" aria-hidden="true" />
@@ -151,7 +176,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
                   </div>
                 </Menu.Items>
               </Transition>
-            </Menu>
+            </Menu> */}
           </div>
         )}
       </div>

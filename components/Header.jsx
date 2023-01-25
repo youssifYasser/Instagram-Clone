@@ -10,7 +10,7 @@ import {
   UserIcon,
 } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/20/solid';
-import Popover from '../components/Popover';
+import MenuComponent from './Menu';
 import { signIn, useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
@@ -68,15 +68,12 @@ const Header = () => {
                 onClick={() => setOpen({ open: true, type: 'create' })}
               />
               <HeartIcon className="navBtn" />
-              <Popover
-                menuBtn={session.user.image}
+              <MenuComponent
+                menuBtnImage={{
+                  img: session.user.image,
+                  username: session.user.username,
+                }}
                 BtnPanel={[
-                  {
-                    title: session.user.username,
-                    image: session.user.image,
-                    alt: 'profile picture',
-                    class: 'img',
-                  },
                   {
                     title: 'Your Messages',
                     icon: PaperAirplaneIcon,
