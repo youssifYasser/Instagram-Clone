@@ -100,7 +100,24 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
 
       {/* post image */}
       {postImg && (
-        <img src={postImg} className="object-cover w-full" alt="post-image" />
+        <div
+          onDoubleClick={likePost}
+          className="w-full relative cursor-pointer select-none"
+        >
+          <img src={postImg} className="object-cover w-full" alt="post-image" />
+
+          <div
+            className={`${
+              hasLiked && 'delay-1000 scale-0'
+            } transition-all duration-300 ease-out absolute inset-0 flex items-center justify-center`}
+          >
+            <HeartIconFilled
+              className={` ${
+                hasLiked ? 'scale-100' : 'hidden'
+              } transition-all duration-300 ease-out text-gray-400 text-opacity-90 w-16 sm:w-20`}
+            />
+          </div>
+        </div>
       )}
 
       {/* buttons */}

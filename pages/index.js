@@ -1,7 +1,6 @@
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+
 import { useRecoilState } from 'recoil';
 import { postsState } from '../atoms/postsAtom';
 import CreatePostModal from '../components/CreatePostModal';
