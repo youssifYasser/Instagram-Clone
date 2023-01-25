@@ -15,6 +15,7 @@ import { HeartIcon as HeartIconFilled } from '@heroicons/react/24/solid';
 import { likesModalState } from '../atoms/likesModalAtom';
 import { likesState } from '../atoms/likesAtom';
 import { useRecoilState } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
 
 const Comment = ({ username, postId, comment }) => {
   const { data: session } = useSession();
@@ -22,7 +23,7 @@ const Comment = ({ username, postId, comment }) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [likes, setLikes] = useState([]);
   const [likesAtom, setLikesAtom] = useRecoilState(likesState);
-  const [likesOpen, setLikesOpen] = useRecoilState(likesModalState);
+  const [open, setOpen] = useRecoilState(modalState);
 
   useEffect(() => {
     onSnapshot(
@@ -114,7 +115,8 @@ const Comment = ({ username, postId, comment }) => {
                   commentId: comment.id,
                   type: 'comment',
                 });
-                setLikesOpen(true);
+
+                setOpen({ open: true, type: 'likes' });
               }}
             >
               {likes.length} {likes.length > 1 ? 'likes' : 'like'}

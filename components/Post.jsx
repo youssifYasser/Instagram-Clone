@@ -29,7 +29,12 @@ import { db, storage } from '../firebase';
 import Comment from './Comment';
 import { useRecoilState } from 'recoil';
 import { likesState } from '../atoms/likesAtom';
-import { likesModalState } from '../atoms/likesModalAtom';
+import EmojiPicker, {
+  EmojiStyle,
+  SkinTones,
+  Theme,
+  Categories,
+} from 'emoji-picker-react';
 
 import { modalState } from '../atoms/modalAtom';
 
@@ -42,7 +47,9 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
   const commentRef = useRef(null);
   const [likesAtom, setLikesAtom] = useRecoilState(likesState);
   const [open, setOpen] = useRecoilState(modalState);
+  const [emojiPicker, setEmojiPicker] = useState(false);
 
+  //get Comments
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
@@ -57,6 +64,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
     };
   }, [db, id]);
 
+  //get Likes
   useEffect(() => {
     onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => {
       setLikes(snapshot.docs);
@@ -84,7 +92,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
   const sendComment = async (e) => {
     e.preventDefault();
 
-    const commentToPost = commentRef.current.value;
+    const commentToPost = commentRef.current.value.trim();
     commentRef.current.value = '';
 
     await addDoc(collection(db, 'posts', id, 'comments'), {
@@ -93,6 +101,10 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
       timestamp: serverTimestamp(),
       comment: commentToPost,
     });
+  };
+
+  const handleEmojiClick = (emojiData, event) => {
+    commentRef.current.value = commentRef.current.value + emojiData.emoji;
   };
 
   return (
@@ -233,22 +245,78 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
 
       {/* input box */}
       {session && (
-        <form className="flex items-center p-4">
-          <FaceSmileIcon className="h-6 sm:h-7" />
-          <input
-            type="text"
-            placeholder="Add a comment..."
-            ref={commentRef}
-            className="flex-1 text-sm sm:text-base border-0 focus:ring-0 outline-none"
-          />
-          <button
-            type="submit"
-            onClick={sendComment}
-            className="font-semibold text-blue-400"
-          >
-            Post
-          </button>
-        </form>
+        <>
+          <form className="flex items-center p-4">
+            <FaceSmileIcon
+              className="h-6 sm:h-7 cursor-pointer hover:scale-110 transition-all duration-200 ease-out"
+              onClick={() => setEmojiPicker(!emojiPicker)}
+            />
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              ref={commentRef}
+              className="flex-1 text-sm sm:text-base border-0 focus:ring-0 outline-none"
+            />
+            <button
+              type="submit"
+              onClick={sendComment}
+              className="font-semibold text-blue-400"
+            >
+              Post
+            </button>
+          </form>
+          {emojiPicker && (
+            <div className="relative w-full">
+              <div className="absolute z-50 w-[60%] sm:w-[50%] -top-2 left-2">
+                <EmojiPicker
+                  onEmojiClick={handleEmojiClick}
+                  autoFocusSearch={false}
+                  theme={Theme.LIGHT}
+                  height={350}
+                  width="100%"
+                  lazyLoadEmojis={true}
+                  skinTonesDisabled
+                  defaultSkinTone={SkinTones.MEDIUM_LIGHT}
+                  emojiStyle={EmojiStyle.FACEBOOK}
+                  categories={[
+                    {
+                      name: 'Smileys & People',
+                      category: Categories.SMILEYS_PEOPLE,
+                    },
+                    {
+                      name: 'Animals & Nature',
+                      category: Categories.ANIMALS_NATURE,
+                    },
+                    {
+                      name: 'Food & Drink',
+                      category: Categories.FOOD_DRINK,
+                    },
+                    {
+                      name: 'Travel & Places',
+                      category: Categories.TRAVEL_PLACES,
+                    },
+                    {
+                      name: 'Activities',
+                      category: Categories.ACTIVITIES,
+                    },
+                    {
+                      name: 'Objects',
+                      category: Categories.OBJECTS,
+                    },
+                    {
+                      name: 'Symbols',
+                      category: Categories.SYMBOLS,
+                    },
+                    {
+                      name: 'Flags',
+                      category: Categories.FLAGS,
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
