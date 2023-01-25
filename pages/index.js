@@ -1,7 +1,8 @@
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
 import { postsState } from '../atoms/postsAtom';
 import CreatePostModal from '../components/CreatePostModal';
 import Feed from '../components/Feed';
@@ -11,7 +12,9 @@ import { db } from '../firebase';
 
 const Home = ({ posts }) => {
   const [postsAtom, setPostsAtom] = useRecoilState(postsState);
+  const open = useRecoilValue(modalState);
   setPostsAtom(posts);
+  console.log(open);
   return (
     <>
       <Head>

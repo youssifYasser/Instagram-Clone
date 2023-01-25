@@ -1,34 +1,47 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { CameraIcon } from '@heroicons/react/24/outline';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { useSession } from 'next-auth/react';
-import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from 'firebase/storage';
+import { deletePostState } from '../atoms/deletePostAtom';
 
 const CreatePostModal = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useRecoilState(modalState);
+  const [deletePostAtom, setDeletePostAtom] = useRecoilState(deletePostState);
 
   const filePickerRef = useRef(null);
   const captionRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (open.type === 'create') {
+      setDeletePostAtom({ caption: '', postId: '', postImage: '' });
+    }
+  }, [open]);
+
   const addImageToPost = (e) => {
     const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
-
     reader.onload = (readerEvent) => {
       setSelectedImage(readerEvent.target.result);
     };
@@ -40,6 +53,7 @@ const CreatePostModal = () => {
     setLoading(true);
 
     await addDoc(collection(db, 'posts'), {
+      userId: session.user.uid,
       username: session.user.username,
       profileImage: session.user.image,
       caption: captionRef.current.value,
@@ -56,17 +70,29 @@ const CreatePostModal = () => {
       );
     });
 
-    setOpen(false);
+    setOpen({ open: false, type: '' });
     setLoading(false);
     setSelectedImage(null);
   };
 
+  const deletePost = async () => {
+    await deleteDoc(doc(db, 'posts', deletePostAtom.postId));
+    const imageRef = ref(storage, `posts/${deletePostAtom.postId}/image`);
+    await deleteObject(imageRef);
+    setDeletePostAtom({ postId: '', postImage: '', caption: '' });
+    setOpen({ open: false, type: '' });
+  };
+
   return (
     <div>
-      {open && (
+      {open.open && (
         <>
-          <Transition appear show={open} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={setOpen}>
+          <Transition appear show={open.open} as={Fragment}>
+            <Dialog
+              as="div"
+              className="relative z-50"
+              onClose={() => setOpen({ open: false, type: '' })}
+            >
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -116,6 +142,12 @@ const CreatePostModal = () => {
                               </p>
                             )}
                           </div>
+                        ) : deletePostAtom.postImage ? (
+                          <img
+                            src={deletePostAtom.postImage}
+                            alt="post image"
+                            className="w-full object-contain"
+                          />
                         ) : (
                           <>
                             <div
@@ -140,23 +172,43 @@ const CreatePostModal = () => {
                         )}
 
                         <div className="mt-4">
-                          <input
-                            type="text"
-                            ref={captionRef}
-                            className="border-none focus:ring-0 w-full text-center"
-                            placeholder="Write a caption"
-                          />
+                          {deletePostAtom.postImage ? (
+                            <input
+                              type="text"
+                              value={deletePostAtom.caption}
+                              disabled
+                              className="border-none focus:ring-0 w-full text-center"
+                              placeholder="caption"
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              ref={captionRef}
+                              className="border-none focus:ring-0 w-full text-center"
+                              placeholder="Write a caption"
+                            />
+                          )}
                         </div>
 
                         <div className="mt-4">
-                          <button
-                            onClick={uploadPost}
-                            disabled={!selectedImage || loading}
-                            type="button"
-                            className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base sm:text-sm font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 "
-                          >
-                            {loading ? 'Uploading...' : 'Create Post'}
-                          </button>
+                          {deletePostAtom.postImage ? (
+                            <button
+                              onClick={deletePost}
+                              type="button"
+                              className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base sm:text-sm font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                            >
+                              Delete Post
+                            </button>
+                          ) : (
+                            <button
+                              onClick={uploadPost}
+                              disabled={!selectedImage || loading}
+                              type="button"
+                              className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base sm:text-sm font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 "
+                            >
+                              {loading ? 'Uploading...' : 'Create Post'}
+                            </button>
+                          )}
                         </div>
                       </div>
                     </Dialog.Panel>

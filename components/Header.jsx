@@ -75,7 +75,7 @@ const Header = () => {
               </div>
               <PlusCircleIcon
                 className="navBtn"
-                onClick={() => setOpen(true)}
+                onClick={() => setOpen({ open: true, type: 'create' })}
               />
               <HeartIcon className="navBtn" />
               <Popover

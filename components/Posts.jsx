@@ -30,6 +30,7 @@ const Posts = () => {
           id={post.id}
           username={post.username}
           userImg={post.profileImage}
+          userId={post.userId}
           postImg={post.postImage}
           caption={post.caption}
         />

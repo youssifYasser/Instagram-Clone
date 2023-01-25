@@ -37,7 +37,8 @@ const PopverComponent = ({ menuBtn, BtnPanel }) => {
                   <div
                     onClick={() => {
                       btn.class === 'logout' && signOut({ callbackUrl: '/' });
-                      btn.class === 'add' && setOpen(true);
+                      btn.class === 'add' &&
+                        setOpen({ open: true, type: 'create' });
                     }}
                     className={`${
                       btn.class === 'img' ||
