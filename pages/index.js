@@ -6,6 +6,7 @@ import { postsState } from '../atoms/postsAtom';
 import CreatePostModal from '../components/CreatePostModal';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
+import LikesListModal from '../components/LikesListModal';
 import { db } from '../firebase';
 
 const Home = ({ posts }) => {
@@ -24,6 +25,7 @@ const Home = ({ posts }) => {
         <Header />
         <Feed />
         <CreatePostModal />
+        <LikesListModal />
       </main>
     </>
   );

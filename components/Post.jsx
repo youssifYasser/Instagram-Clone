@@ -9,7 +9,7 @@ import {
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/24/solid';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import {
   addDoc,
   collection,
@@ -23,6 +23,10 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import Comment from './Comment';
+import { useRecoilState } from 'recoil';
+import { likesState } from '../atoms/likesAtom';
+import { likesModalState } from '../atoms/likesModalAtom';
+import { Menu, Transition } from '@headlessui/react';
 
 const Post = ({ id, username, userImg, postImg, caption }) => {
   const [showCaption, setShowCaption] = useState(false);
@@ -31,6 +35,8 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
   const [hasLiked, setHasLiked] = useState(false);
   const { data: session } = useSession();
   const commentRef = useRef(null);
+  const [likesAtom, setLikesAtom] = useRecoilState(likesState);
+  const [likesOpen, setLikesOpen] = useRecoilState(likesModalState);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -38,7 +44,7 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
         collection(db, 'posts', id, 'comments'),
         orderBy('timestamp', 'desc')
       ),
-      (Snapshot) => setComments(Snapshot.docs)
+      (snapshot) => setComments(snapshot.docs)
     );
 
     return () => {
@@ -47,9 +53,9 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
   }, [db, id]);
 
   useEffect(() => {
-    onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) =>
-      setLikes(snapshot.docs)
-    );
+    onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => {
+      setLikes(snapshot.docs);
+    });
   }, [db, id]);
 
   useEffect(() => {
@@ -64,6 +70,8 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
     } else {
       await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
         username: session.user.username,
+        userImage: session.user.image,
+        name: session.user.name,
       });
     }
   };
@@ -146,7 +154,13 @@ const Post = ({ id, username, userImg, postImg, caption }) => {
       {/* caption */}
       <div className="p-4 sm:p-5 flex flex-col ">
         {likes.length > 0 && (
-          <p className="font-bold mb-1">
+          <p
+            className="font-bold w-fit mb-1 cursor-pointer hover:underline"
+            onClick={() => {
+              setLikesAtom({ ...likesAtom, postId: id, type: 'post' });
+              setLikesOpen(true);
+            }}
+          >
             {likes.length} {likes.length > 1 ? 'likes' : 'like'}
           </p>
         )}

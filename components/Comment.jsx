@@ -12,12 +12,17 @@ import Moment from 'react-moment';
 import { db } from '../firebase';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/24/solid';
+import { likesModalState } from '../atoms/likesModalAtom';
+import { likesState } from '../atoms/likesAtom';
+import { useRecoilState } from 'recoil';
 
 const Comment = ({ username, postId, comment }) => {
   const { data: session } = useSession();
   const [showComment, setShowComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [likesAtom, setLikesAtom] = useRecoilState(likesState);
+  const [likesOpen, setLikesOpen] = useRecoilState(likesModalState);
 
   useEffect(() => {
     onSnapshot(
@@ -32,7 +37,7 @@ const Comment = ({ username, postId, comment }) => {
     );
   }, [likes]);
 
-  const likePost = async () => {
+  const likeComment = async () => {
     if (hasLiked) {
       await deleteDoc(
         doc(
@@ -58,6 +63,8 @@ const Comment = ({ username, postId, comment }) => {
         ),
         {
           username: session.user.username,
+          userImage: session.user.image,
+          name: session.user.name,
         }
       );
     }
@@ -98,7 +105,18 @@ const Comment = ({ username, postId, comment }) => {
         <div className="flex items-center space-x-3 text-xs text-gray-500">
           <Moment fromNow>{comment.data().timestamp?.toDate()}</Moment>
           {likes.length > 0 && (
-            <p>
+            <p
+              className="cursor-pointer hover:underline"
+              onClick={() => {
+                setLikesAtom({
+                  ...likesAtom,
+                  postId: postId,
+                  commentId: comment.id,
+                  type: 'comment',
+                });
+                setLikesOpen(true);
+              }}
+            >
               {likes.length} {likes.length > 1 ? 'likes' : 'like'}
             </p>
           )}
@@ -108,11 +126,11 @@ const Comment = ({ username, postId, comment }) => {
         <div>
           {hasLiked ? (
             <HeartIconFilled
-              onClick={likePost}
+              onClick={likeComment}
               className="postBtn h-3 text-red-500"
             />
           ) : (
-            <HeartIcon onClick={likePost} className="postBtn h-3" />
+            <HeartIcon onClick={likeComment} className="postBtn h-3" />
           )}
         </div>
       )}
