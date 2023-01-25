@@ -16,6 +16,25 @@ const MenuComponent = ({
   const [deletePostAtom, setDeletePostAtom] = useRecoilState(deletePostState);
   const { data: session } = useSession();
 
+  const handleMenuButtons = (type) => {
+    switch (type) {
+      case 'logout':
+        signOut({ callbackUrl: '/' });
+        break;
+      case 'add':
+        setOpen({ open: true, type: 'create' });
+        break;
+      case 'delete':
+        setDeletePostAtom({
+          postId: postDetails.postId,
+          postImage: postDetails.postImage,
+          caption: postDetails.caption,
+        });
+        setOpen({ open: true, type: 'delete' });
+        break;
+    }
+  };
+
   return (
     <Menu as="div" className="inline-block relative text-left">
       <div className="flex items-center cursor-pointer">
@@ -78,18 +97,7 @@ const MenuComponent = ({
               <Menu.Item key={index}>
                 {({ active }) => (
                   <div
-                    onClick={() => {
-                      btn.class === 'logout' && signOut({ callbackUrl: '/' });
-                      btn.class === 'add' &&
-                        setOpen({ open: true, type: 'create' });
-                      btn.class === 'delete' &&
-                        setDeletePostAtom({
-                          postId: postDetails.postId,
-                          postImage: postDetails.postImage,
-                          caption: postDetails.caption,
-                        });
-                      setOpen({ open: true, type: 'delete' });
-                    }}
+                    onClick={() => handleMenuButtons(btn.class)}
                     className={`${
                       btn.class === 'delete' &&
                       session.user.uid !== postDetails.userId &&

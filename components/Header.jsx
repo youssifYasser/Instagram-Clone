@@ -5,9 +5,9 @@ import {
   MagnifyingGlassIcon,
   PaperAirplaneIcon,
   PlusCircleIcon,
-  HeartIcon,
   ArrowRightOnRectangleIcon,
   UserIcon,
+  StarIcon,
 } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/20/solid';
 import MenuComponent from './Menu';
@@ -67,7 +67,7 @@ const Header = () => {
                 className="navBtn"
                 onClick={() => setOpen({ open: true, type: 'create' })}
               />
-              <HeartIcon className="navBtn" />
+              <StarIcon className="navBtn" />
               <MenuComponent
                 menuBtnImage={{
                   img: session.user.image,
@@ -84,7 +84,7 @@ const Header = () => {
                     icon: PlusCircleIcon,
                     class: 'add',
                   },
-                  { title: 'Notifications', icon: HeartIcon },
+                  { title: 'Favourites', icon: StarIcon },
                   {
                     title: 'Log out',
                     icon: ArrowRightOnRectangleIcon,
@@ -96,10 +96,7 @@ const Header = () => {
           ) : (
             <>
               <Link href="/auth/sign-in">
-                <button
-                  className="px-3 sm:px-5 py-1 text-sm sm:text-base whitespace-nowrap font-semibold text-center rounded-full border-2 border-black text-white bg-black hover:bg-opacity-90 active:bg-white active:text-black transition-colors duration-150 "
-                  onClick={signIn}
-                >
+                <button className="px-3 sm:px-5 py-1 text-sm sm:text-base whitespace-nowrap font-semibold text-center rounded-full border-2 border-black text-white bg-black hover:bg-opacity-90 active:bg-white active:text-black transition-colors duration-150 ">
                   Sign In
                 </button>
               </Link>

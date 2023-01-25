@@ -30,11 +30,8 @@ import Comment from './Comment';
 import { useRecoilState } from 'recoil';
 import { likesState } from '../atoms/likesAtom';
 import { likesModalState } from '../atoms/likesModalAtom';
-import { Menu, Transition } from '@headlessui/react';
 
-import { deleteObject, ref } from 'firebase/storage';
 import { modalState } from '../atoms/modalAtom';
-import { deletePostState } from '../atoms/deletePostAtom';
 
 const Post = ({ id, username, userImg, userId, postImg, caption }) => {
   const [showCaption, setShowCaption] = useState(false);
@@ -44,7 +41,6 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
   const { data: session } = useSession();
   const commentRef = useRef(null);
   const [likesAtom, setLikesAtom] = useRecoilState(likesState);
-  const [likesOpen, setLikesOpen] = useRecoilState(likesModalState);
   const [open, setOpen] = useRecoilState(modalState);
 
   useEffect(() => {
@@ -136,47 +132,6 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
                 { title: 'Unfollow', icon: UserMinusIcon, class: 'unfollow' },
               ]}
             />
-            {/* <Menu as="div" className="relative inline-block text-left">
-              <div className="flex items-center cursor-pointer">
-                <Menu.Button>
-                  <EllipsisHorizontalIcon className="h-5" aria-hidden="true" />
-                </Menu.Button>
-              </div>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="z-50 absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="p-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={() => {
-                            setDeletePostAtom({
-                              postId: id,
-                              postImage: postImg,
-                              caption: caption,
-                            });
-                            setOpen({ open: true, type: 'delete' });
-                          }}
-                          disabled={session.user.uid !== userId}
-                          className={`${
-                            active && 'bg-gray-200 text-gray-900'
-                          } group flex w-full items-center rounded-md px-2 py-2 text-sm sm:text-base disabled:bg-gray-400 disabled:text-white disabled:cursor-not-allowed`}
-                        >
-                          Delete Post
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu> */}
           </div>
         )}
       </div>
@@ -205,7 +160,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
 
       {/* buttons */}
       {session && (
-        <div className="flex  justify-between px-4 pt-3 sm:pt-4">
+        <div className="flex justify-between px-4 pt-3 sm:pt-4">
           <div className="flex space-x-4">
             {hasLiked ? (
               <HeartIconFilled
@@ -233,7 +188,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
             className="font-bold w-fit mb-1 cursor-pointer hover:underline"
             onClick={() => {
               setLikesAtom({ ...likesAtom, postId: id, type: 'post' });
-              setLikesOpen(true);
+              setOpen({ open: true, type: 'likes' });
             }}
           >
             {likes.length} {likes.length > 1 ? 'likes' : 'like'}

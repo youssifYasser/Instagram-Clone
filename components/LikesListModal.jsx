@@ -118,7 +118,6 @@ const LikesListModal = () => {
                           </div>
                         </div>
                       ))}
-                      <div></div>
                     </Dialog.Panel>
                   </Transition.Child>
                 </div>

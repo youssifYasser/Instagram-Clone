@@ -1,14 +1,13 @@
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Head from 'next/head';
-
+import { db } from '../firebase';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
 import { postsState } from '../atoms/postsAtom';
-import CreatePostModal from '../components/CreatePostModal';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
 import LikesListModal from '../components/LikesListModal';
-import { db } from '../firebase';
+import Modal from '../components/Modal';
 
 const Home = ({ posts }) => {
   const [postsAtom, setPostsAtom] = useRecoilState(postsState);
@@ -27,7 +26,7 @@ const Home = ({ posts }) => {
       <main className="overflow-y-scroll bg-gray-50  h-screen scrollbar-thumb-gray-400 scrollbar-thin">
         <Header />
         <Feed />
-        <CreatePostModal />
+        <Modal />
         <LikesListModal />
       </main>
     </>
