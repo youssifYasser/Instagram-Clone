@@ -53,7 +53,9 @@ const Header = () => {
 
         {/* right */}
         <div className="flex items-center space-x-2 sm:space-x-5">
-          <HomeIcon className="navBtn" />
+          <Link href="/">
+            <HomeIcon className="navBtn" />
+          </Link>
 
           {session ? (
             <>

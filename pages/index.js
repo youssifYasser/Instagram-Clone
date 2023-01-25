@@ -2,18 +2,14 @@ import Head from 'next/head';
 import { db } from '../firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modalState } from '../atoms/modalAtom';
 import { postsState } from '../atoms/postsAtom';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
-import LikesListModal from '../components/LikesListModal';
 import Modal from '../components/Modal';
 
 const Home = ({ posts }) => {
   const [postsAtom, setPostsAtom] = useRecoilState(postsState);
-  const open = useRecoilValue(modalState);
   setPostsAtom(posts);
-  console.log(open);
   return (
     <>
       <Head>
@@ -27,7 +23,6 @@ const Home = ({ posts }) => {
         <Header />
         <Feed />
         <Modal />
-        <LikesListModal />
       </main>
     </>
   );

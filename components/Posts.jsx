@@ -10,7 +10,7 @@ const Posts = () => {
   const [posts, setPosts] = useState(postsAtom);
 
   useEffect(() => {
-    onSnapshot(
+    return onSnapshot(
       query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
       (snapshot) => {
         setPosts(
