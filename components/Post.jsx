@@ -155,8 +155,10 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
           >
             <HeartIconFilled
               className={` ${
-                hasLiked ? 'scale-100' : 'delay-300 opacity-100 scale-0'
-              } transition-all duration-300 ease-out text-gray-400 text-opacity-80 w-16 sm:w-20 select-none`}
+                hasLiked
+                  ? 'scale-100 duration-300'
+                  : 'delay-300 duration-500 opacity-100 scale-0'
+              } transition-all  ease-out text-red-500 text-opacity-80 w-24 select-none`}
             />
           </div>
         </div>
