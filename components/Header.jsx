@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/20/solid';
 import MenuComponent from './Menu';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
 

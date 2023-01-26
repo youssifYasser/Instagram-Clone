@@ -30,12 +30,6 @@ import { db } from '../firebase';
 import Comment from './Comment';
 import { useRecoilState } from 'recoil';
 import { likesState } from '../atoms/likesAtom';
-import EmojiPicker, {
-  EmojiStyle,
-  SkinTones,
-  Theme,
-  Categories,
-} from 'emoji-picker-react';
 import { modalState } from '../atoms/modalAtom';
 
 const Post = ({ id, username, userImg, userId, postImg, caption }) => {

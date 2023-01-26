@@ -1,7 +1,6 @@
-import Head from 'next/head';
 import { db } from '../firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { postsState } from '../atoms/postsAtom';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
