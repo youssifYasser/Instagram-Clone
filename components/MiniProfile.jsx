@@ -8,7 +8,7 @@ const MiniProfile = () => {
       <div className="flex items-center justify-between space-x-4 ml-10 mt-14">
         <div className="relative w-14 h-14">
           <Image
-            layout="fill"
+            fill
             src={session.user.image}
             alt="profile picture"
             className="rounded-full border p-[1.5px]"

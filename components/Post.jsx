@@ -113,7 +113,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
       <div className="flex items-center p-3 sm:p-5 ">
         <div className="relative h-11 w-11 sm:h-12 sm:w-12 mr-3">
           <Image
-            layout="fill"
+            fill
             className="rounded-full border object-contain  p-[1.5px]"
             src={userImg}
             alt="user profile picture"

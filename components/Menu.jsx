@@ -79,7 +79,7 @@ const MenuComponent = ({
                   >
                     <div className="relative w-10 h-10 sm:w-11 sm:h-11">
                       <Image
-                        layout="fill"
+                        fill
                         src={menuBtnImage.img}
                         alt="profile pic"
                         className="rounded-full object-contain"
