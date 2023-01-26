@@ -12,7 +12,6 @@ import Moment from 'react-moment';
 import { db } from '../firebase';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/24/solid';
-import { likesModalState } from '../atoms/likesModalAtom';
 import { likesState } from '../atoms/likesAtom';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';

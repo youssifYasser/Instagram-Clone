@@ -1,4 +1,5 @@
 import MenuComponent from './Menu';
+import EmojiContainer from './EmojiContainer';
 import {
   EllipsisHorizontalIcon,
   StarIcon,
@@ -25,7 +26,7 @@ import {
   serverTimestamp,
   setDoc,
 } from 'firebase/firestore';
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import Comment from './Comment';
 import { useRecoilState } from 'recoil';
 import { likesState } from '../atoms/likesAtom';
@@ -35,7 +36,6 @@ import EmojiPicker, {
   Theme,
   Categories,
 } from 'emoji-picker-react';
-
 import { modalState } from '../atoms/modalAtom';
 
 const Post = ({ id, username, userImg, userId, postImg, caption }) => {
@@ -268,51 +268,7 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
           {emojiPicker && (
             <div className="relative w-full">
               <div className="absolute z-50 w-[60%] sm:w-[50%] -top-2 left-2">
-                <EmojiPicker
-                  onEmojiClick={handleEmojiClick}
-                  autoFocusSearch={false}
-                  theme={Theme.LIGHT}
-                  height={350}
-                  width="100%"
-                  lazyLoadEmojis={true}
-                  skinTonesDisabled
-                  defaultSkinTone={SkinTones.MEDIUM_LIGHT}
-                  emojiStyle={EmojiStyle.FACEBOOK}
-                  categories={[
-                    {
-                      name: 'Smileys & People',
-                      category: Categories.SMILEYS_PEOPLE,
-                    },
-                    {
-                      name: 'Animals & Nature',
-                      category: Categories.ANIMALS_NATURE,
-                    },
-                    {
-                      name: 'Food & Drink',
-                      category: Categories.FOOD_DRINK,
-                    },
-                    {
-                      name: 'Travel & Places',
-                      category: Categories.TRAVEL_PLACES,
-                    },
-                    {
-                      name: 'Activities',
-                      category: Categories.ACTIVITIES,
-                    },
-                    {
-                      name: 'Objects',
-                      category: Categories.OBJECTS,
-                    },
-                    {
-                      name: 'Symbols',
-                      category: Categories.SYMBOLS,
-                    },
-                    {
-                      name: 'Flags',
-                      category: Categories.FLAGS,
-                    },
-                  ]}
-                />
+                <EmojiContainer handleEmojiClick={handleEmojiClick} />
               </div>
             </div>
           )}

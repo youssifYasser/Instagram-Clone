@@ -1,5 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { CameraIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  CameraIcon,
+  FaceSmileIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { modalState } from '../atoms/modalAtom';
@@ -23,6 +27,7 @@ import {
 import { deletePostState } from '../atoms/deletePostAtom';
 import Image from 'next/image';
 import { likesState } from '../atoms/likesAtom';
+import EmojiContainer from './EmojiContainer';
 
 const Modal = () => {
   const { data: session } = useSession();
@@ -34,11 +39,13 @@ const Modal = () => {
   const captionRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [emojiPicker, setEmojiPicker] = useState(false);
 
   useEffect(() => {
     if (open.type === 'create') {
       setDeletePostAtom({ caption: '', postId: '', postImage: '' });
-      setLikesAtom({ postId: '', commentId: '', type: '' });
+    } else if (open.type === 'delete') {
+      setSelectedImage(null);
     }
   }, [open]);
 
@@ -125,6 +132,10 @@ const Modal = () => {
     setOpen({ open: false, type: '' });
   };
 
+  const handleEmojiClick = (emojiData, event) => {
+    captionRef.current.value = captionRef.current.value + emojiData.emoji;
+  };
+
   return (
     <div>
       {open.open && (
@@ -148,7 +159,7 @@ const Modal = () => {
               </Transition.Child>
 
               <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center  text-center">
+                <div className="flex min-h-full items-center -mt-20 justify-center  text-center">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -274,12 +285,30 @@ const Modal = () => {
                                 placeholder="caption"
                               />
                             ) : (
-                              <input
-                                type="text"
-                                ref={captionRef}
-                                className="border-none focus:ring-0 w-full text-center"
-                                placeholder="Write a caption"
-                              />
+                              <>
+                                <div className="flex items-center">
+                                  <FaceSmileIcon
+                                    className="h-6 sm:h-7 cursor-pointer hover:scale-110 transition-all duration-200 ease-out"
+                                    onClick={() => setEmojiPicker(!emojiPicker)}
+                                  />
+                                  <input
+                                    type="text"
+                                    ref={captionRef}
+                                    className="border-none focus:ring-0 w-full "
+                                    placeholder="Write a caption"
+                                  />
+                                </div>
+
+                                {emojiPicker && (
+                                  <div className="relative w-full">
+                                    <div className="absolute z-50 w-[60%] sm:w-[80%] ">
+                                      <EmojiContainer
+                                        handleEmojiClick={handleEmojiClick}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </>
                             )}
                           </div>
 
