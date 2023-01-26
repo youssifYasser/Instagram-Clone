@@ -1,7 +1,7 @@
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import googleLogo from '../public/google_logo.png';
-import instaLogo from '../public/headerIcon.png';
+import instaLogo from '../public/headLogo.png';
 
 const SignIn = ({ provider }) => {
   return (
