@@ -1,7 +1,6 @@
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import googleLogo from '../public/google_logo.png';
-import instaLogo from '../public/headLogo.png';
 
 const SignIn = ({ provider }) => {
   return (
@@ -19,9 +18,9 @@ const SignIn = ({ provider }) => {
           <div className="relative w-9 h-9 sm:w-11 sm:h-11">
             <Image
               alt="google logo"
-              layout="fill"
-              objectFit="contain"
-              src={provider.id === 'google' ? googleLogo : instaLogo}
+              fill
+              className="object-contain"
+              src={googleLogo}
             />
           </div>
           <h1 className="font-bold text-sm sm:text-lg">
