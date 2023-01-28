@@ -16,7 +16,7 @@ const EmojiContainer = ({ handleEmojiClick }) => {
       lazyLoadEmojis={true}
       skinTonesDisabled
       defaultSkinTone={SkinTones.MEDIUM_LIGHT}
-      emojiStyle={EmojiStyle.FACEBOOK}
+      emojiStyle={EmojiStyle.APPLE}
       categories={[
         {
           name: 'Smileys & People',
