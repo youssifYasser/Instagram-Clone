@@ -87,16 +87,16 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
 
   const sendComment = async (e) => {
     e.preventDefault();
-
     const commentToPost = commentRef.current.value.trim();
     commentRef.current.value = '';
-
-    await addDoc(collection(db, 'posts', id, 'comments'), {
-      username: session.user.username,
-      userImage: session.user.image,
-      timestamp: serverTimestamp(),
-      comment: commentToPost,
-    });
+    if (commentToPost !== '') {
+      await addDoc(collection(db, 'posts', id, 'comments'), {
+        username: session.user.username,
+        userImage: session.user.image,
+        timestamp: serverTimestamp(),
+        comment: commentToPost,
+      });
+    }
   };
 
   const handleEmojiClick = (emojiData, event) => {
