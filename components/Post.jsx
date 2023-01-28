@@ -72,14 +72,16 @@ const Post = ({ id, username, userImg, userId, postImg, caption }) => {
   }, [likes]);
 
   const likePost = async () => {
-    if (hasLiked) {
-      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
-    } else {
-      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
-        username: session.user.username,
-        userImage: session.user.image,
-        name: session.user.name,
-      });
+    if (session) {
+      if (hasLiked) {
+        await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+      } else {
+        await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
+          username: session.user.username,
+          userImage: session.user.image,
+          name: session.user.name,
+        });
+      }
     }
   };
 
