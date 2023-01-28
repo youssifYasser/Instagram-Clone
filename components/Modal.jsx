@@ -96,7 +96,8 @@ const Modal = () => {
     };
   };
 
-  const uploadPost = async () => {
+  const uploadPost = async (e) => {
+    e.preventDefault();
     if (loading) return;
 
     setLoading(true);
@@ -105,7 +106,7 @@ const Modal = () => {
       userId: session.user.uid,
       username: session.user.username,
       profileImage: session.user.image,
-      caption: captionRef.current.value,
+      caption: captionRef.current.value.trim(),
       timestamp: serverTimestamp(),
     }).then(async (document) => {
       const imageRef = ref(storage, `posts/${document.id}/image`);
@@ -124,7 +125,9 @@ const Modal = () => {
     setSelectedImage(null);
   };
 
-  const deletePost = async () => {
+  const deletePost = async (e) => {
+    e.preventDefault();
+
     await deleteDoc(doc(db, 'posts', deletePostAtom.postId));
     const imageRef = ref(storage, `posts/${deletePostAtom.postId}/image`);
     await deleteObject(imageRef);
@@ -274,8 +277,7 @@ const Modal = () => {
                               </div>
                             </>
                           )}
-
-                          <div className="mt-4">
+                          <form className="mt-4 space-y-4">
                             {deletePostAtom.postImage ? (
                               <input
                                 type="text"
@@ -310,28 +312,26 @@ const Modal = () => {
                                 )}
                               </>
                             )}
-                          </div>
 
-                          <div className="mt-4">
                             {deletePostAtom.postImage ? (
                               <button
                                 onClick={deletePost}
-                                type="button"
+                                type="submit"
                                 className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base sm:text-sm font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                               >
                                 Delete Post
                               </button>
                             ) : (
                               <button
+                                type="submit"
                                 onClick={uploadPost}
                                 disabled={!selectedImage || loading}
-                                type="button"
                                 className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base sm:text-sm font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 "
                               >
                                 {loading ? 'Uploading...' : 'Create Post'}
                               </button>
                             )}
-                          </div>
+                          </form>
                         </div>
                       )}
                     </Dialog.Panel>
